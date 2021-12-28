@@ -1,7 +1,48 @@
-﻿@{
+﻿@model IEnumerable<SoftwareSearch.Domain.Software.Software>
+@{
     ViewData["Title"] = "Emergent Software Search";
 }
 
 <div class="text-center">
-    <h1 class="display-4">Emergent Software Search</h1>
+    <div class="sa-content">
+
+        <h2>Emergent Software Search</h2>
+
+        <form method="get" asp-controller="Home" asp-action="Index" autocomplete="off">
+
+            <div class="form-group">
+                <input type="text" class="form-control" id="inputSearchText" name="SearchText" 
+                       placeholder="Search by semver version"
+                       pattern="^(\d|[1-9]\d*)(\.(\d|[1-9]\d*))?(\.(\d|[1-9]\d*))?$"
+                       oninvalid="this.setCustomValidity('Invalid semver format. ([major].[minor].[patch])')"
+                       oninput="this.setCustomValidity('')"
+                       value="@Context.Request.Query["SearchText"]" maxlength="200">
+            </div>
+
+            <div class="form-group">
+                <button type="submit" class="btn btn-primary">Search</button>
+            </div>
+
+        </form>
+
+        <table id="tableResults" class="table">
+            <thead>
+                <tr>
+                    <th>Name</th>
+                    <th>Version</th>
+                </tr>
+            </thead>
+            <tbody>
+
+                @foreach (var software in Model)
+                {
+                    <tr>
+                        <td>@software.Name</td>
+                        <td>@software.Version</td>
+                    </tr>
+                }
+
+            </tbody>
+        </table>
+    </div>
 </div>

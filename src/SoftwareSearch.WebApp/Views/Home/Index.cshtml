@@ -1,4 +1,4 @@
-﻿@model IEnumerable<SoftwareSearch.Domain.Software.Models.Software>
+﻿@model IEnumerable<SoftwareSearch.Domain.Software.Models.SoftwareInfo>
 @{
     ViewData["Title"] = "Emergent Software Search";
 }
@@ -11,7 +11,10 @@
         <form method="get" asp-controller="Home" asp-action="Index" autocomplete="off">
 
             <div class="form-group">
-                <input type="text" class="form-control" id="inputSearchText" name="SearchText" 
+                <p class="help">
+                    Search the Emergent software repository using <a href="semver.org">semver</a> format, in the format of <i>[major].[minor].[patch]</i>. Note that the minor and patch portions are optional.
+                </p>
+                <input type="text" class="form-control" id="inputSearchText" name="SearchText"
                        placeholder="Search by semver version"
                        pattern="^(\d|[1-9]\d*)(\.(\d|[1-9]\d*))?(\.(\d|[1-9]\d*))?$"
                        oninvalid="this.setCustomValidity('Invalid semver format. ([major].[minor].[patch])')"
@@ -25,6 +28,8 @@
 
         </form>
 
+        @if (Model.Any())
+        {
         <table id="tableResults" class="table">
             <thead>
                 <tr>
@@ -44,5 +49,6 @@
 
             </tbody>
         </table>
+        }
     </div>
 </div>

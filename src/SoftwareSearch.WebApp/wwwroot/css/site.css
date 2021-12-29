@@ -32,6 +32,12 @@ h2 {
     margin-top: 10px;
 }
 
+.help {
+    font-size: 0.8em;
+    margin-top: 10px;
+    margin-bottom: 10px;
+}
+
 .sa-content {
     padding: 20px;
     background-color: var(--content-background-color);

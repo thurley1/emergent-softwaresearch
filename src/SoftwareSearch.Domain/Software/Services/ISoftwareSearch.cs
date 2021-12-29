@@ -3,9 +3,8 @@ using System.Collections.Generic;
 
 namespace SoftwareSearch.Domain.Software.Services
 {
-    public interface ISoftwareManager
+    public interface ISoftwareSearch
     {
-        IEnumerable<SoftwareInfo> GetAllSoftware();
         IEnumerable<SoftwareInfo> SearchVersions(string SearchText);
     }
 }

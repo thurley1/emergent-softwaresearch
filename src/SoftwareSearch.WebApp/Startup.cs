@@ -30,7 +30,7 @@ namespace SoftwareSearch.WebApp
 
         private void ConfigureDomainServices(IServiceCollection services)
         {
-            services.AddScoped<ISoftwareManager, SoftwareManager>();
+            services.AddScoped<ISoftwareSearch, SoftwareSearchStatic>();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

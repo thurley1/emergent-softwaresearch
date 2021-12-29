@@ -1,6 +1,4 @@
-﻿using System.Linq;
-
-namespace SoftwareSearch.Domain.Software.Models
+﻿namespace SoftwareSearch.Domain.Software.Models
 {
     public class SoftwareInfo
     {

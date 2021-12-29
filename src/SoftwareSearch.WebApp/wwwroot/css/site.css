@@ -9,10 +9,6 @@
     /*content*/
     --content-background-color: var(--quaternary-color);
     --content-max-width: 1000px;
-    --content-table-hover-background-color: var(--primary-color);
-    --content-table-hover-text-color: var(--quaternary-color);
-    --content-table-link-text-color: var(--primary-color);
-    --content-table-link-hover-text-color: var(--quaternary-color);
 }
 
 html, body {
@@ -20,6 +16,7 @@ html, body {
     position: relative;
     margin: 0px;
     padding: 0px;
+    color: var(--secondary-color);
     font-family: "Segoe UI";
 }
 
@@ -32,7 +29,12 @@ h2 {
     margin-top: 10px;
 }
 
+a {
+    color: var(--primary-color);
+}
+
 .help {
+    color: var(--secondary-color);
     font-size: 0.8em;
     margin-top: 10px;
     margin-bottom: 10px;
@@ -40,14 +42,9 @@ h2 {
 
 .sa-content {
     padding: 20px;
+    color: var(--secondary-color);
     background-color: var(--content-background-color);
     text-align: center;
-}
-
-.table {
-    border-right: 1px solid var(--tertiary-color);
-    border-left: 1px solid var(--tertiary-color);
-    border-bottom: 1px solid var(--tertiary-color);
 }
 
 a.navbar-brand {
@@ -55,12 +52,6 @@ a.navbar-brand {
   text-align: center;
   word-break: break-all;
 }
-
-/* Provide sufficient contrast against white background */
-a {
-  color: #0366d6;
-}
-
 
 
 .nav-pills .nav-link.active, .nav-pills .show > .nav-link {

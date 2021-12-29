@@ -5,16 +5,15 @@ using SoftwareSearch.Domain.Software.Services;
 using SoftwareSearch.WebApp.Models;
 using System.Diagnostics;
 using System.Linq;
-using System.Threading.Tasks;
 
 namespace SoftwareSearch.WebApp.Controllers
 {
     public class HomeController : Controller
     {
         private readonly ILogger<HomeController> _logger;
-        private readonly ISoftwareManager _softwareManager;
+        private readonly ISoftwareSearch _softwareManager;
 
-        public HomeController(ILogger<HomeController> logger, ISoftwareManager softwareManager)
+        public HomeController(ILogger<HomeController> logger, ISoftwareSearch softwareManager)
         {
             _logger = logger;
             _softwareManager = softwareManager;

@@ -1,16 +1,21 @@
 ﻿using SoftwareSearch.Domain.Software.Models;
-using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text.RegularExpressions;
 
 namespace SoftwareSearch.Domain.Software.Services
 {
-    public class SoftwareSearchStatic : ISoftwareSearch, ISemverVersionValidator
+    public class SoftwareSearchStatic : ISoftwareSearch
     {
+        private ISemverVersionValidator _versionValidator;
+
+        public SoftwareSearchStatic(ISemverVersionValidator versionValidator)
+        {
+            _versionValidator = versionValidator;
+        }
+
         public IEnumerable<SoftwareInfo> SearchVersions(string SearchText)
         {
-            ValidateVersionString(SearchText);
+            _versionValidator.ValidateVersionString(SearchText);
             var versions = SoftwareManager.GetAllSoftware();
             var parsedVersion = SearchText.Split('.');
 
@@ -48,14 +53,6 @@ namespace SoftwareSearch.Domain.Software.Services
             }
 
             return null;
-        }
-
-        public void ValidateVersionString(string versionString)
-        {
-            var pattern = @"^(\d|[1-9]\d*)(\.(\d|[1-9]\d*))?(\.(\d|[1-9]\d*))?$";
-            var m = Regex.Match(versionString, pattern);
-            if (!m.Success)
-                throw new InvalidOperationException($"The provided version string ({versionString}) is not in a valid format");
         }
     }
 }

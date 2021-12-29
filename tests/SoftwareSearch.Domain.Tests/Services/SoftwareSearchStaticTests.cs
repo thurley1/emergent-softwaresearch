@@ -1,5 +1,6 @@
 ﻿using FluentAssertions;
-using SoftwareSearch.Domain.Software.Models;
+using NSubstitute;
+using SoftwareSearch.Domain.Software.Services;
 using Xunit;
 
 namespace SoftwareSearch.Domain.Tests.Services
@@ -7,75 +8,66 @@ namespace SoftwareSearch.Domain.Tests.Services
     public class SoftwareSearchStaticTests
     {
         [Fact]
-        public void Major_WhenMajorExistsInVersion_SetsProperty()
+        public void SearchVersion_WhenMajorNotPresent_ReturnsEmptyList()
         {
-            var softwareInfo = new SoftwareInfo
-            {
-                Name = "Test Software",
-                Version = "1"
-            };
+            var versionValidator = Substitute.For<ISemverVersionValidator>();
+            versionValidator.ValidateVersionString(Arg.Any<string>());
 
-            softwareInfo.Major.Should().Be(1);
+            var searchService = new SoftwareSearchStatic(versionValidator);
+            var searchText = "";
+            var result = searchService.SearchVersions(searchText);
+            result.Should().BeEmpty();
         }
 
         [Fact]
-        public void Major_WhenMajorDoesNotExistInVersion_SetsPropertyToNull()
+        public void SearchVersion_WhenMajorPresent_ReturnsList()
         {
-            var softwareInfo = new SoftwareInfo
-            {
-                Name = "Test Software",
-                Version = ""
-            };
+            var versionValidator = Substitute.For<ISemverVersionValidator>();
 
-            softwareInfo.Major.Should().BeNull();
+            var searchService = new SoftwareSearchStatic(versionValidator);
+            var searchText = "2";
+            var result = searchService.SearchVersions(searchText);
+
+            result.Should().NotBeEmpty()
+                .And.HaveCount(5);
+            result.Should().Contain(s =>  s.Name == "MS Word" && s.Version == "13.2.1" );
+            result.Should().Contain(s => s.Name == "Angular" && s.Version == "8.1.13");
+            result.Should().Contain(s => s.Name == "Vue.js" && s.Version == "2.6");
+            result.Should().Contain(s => s.Name == "Visual Studio" && s.Version == "2017.0.1");
+            result.Should().Contain(s => s.Name == "Visual Studio" && s.Version == "2019.1");
+
         }
 
         [Fact]
-        public void Minor_WhenMinorExistsInVersion_SetsProperty()
+        public void SearchVersion_WhenMinorPresent_ReturnsList()
         {
-            var softwareInfo = new SoftwareInfo
-            {
-                Name = "Test Software",
-                Version = "1.2"
-            };
+            var versionValidator = Substitute.For<ISemverVersionValidator>();
 
-            softwareInfo.Minor.Should().Be(2);
+            var searchService = new SoftwareSearchStatic(versionValidator);
+            var searchText = "8.1";
+            var result = searchService.SearchVersions(searchText);
+
+            result.Should().NotBeEmpty()
+                .And.HaveCount(4);
+            result.Should().Contain(s => s.Name == "MS Word" && s.Version == "13.2.1");
+            result.Should().Contain(s => s.Name == "Angular" && s.Version == "8.1.13");
+            result.Should().Contain(s => s.Name == "Visual Studio" && s.Version == "2017.0.1");
+            result.Should().Contain(s => s.Name == "Visual Studio" && s.Version == "2019.1");
         }
 
         [Fact]
-        public void Minor_WhenMinorDoesNotExistInVersion_SetsPropertyToNull()
+        public void SearchVersion_WhenPatchPresent_ReturnsList()
         {
-            var softwareInfo = new SoftwareInfo
-            {
-                Name = "Test Software",
-                Version = "1"
-            };
+            var versionValidator = Substitute.For<ISemverVersionValidator>();
 
-            softwareInfo.Minor.Should().BeNull();
-        }
+            var searchService = new SoftwareSearchStatic(versionValidator);
+            var searchText = "2017.0.1";
+            var result = searchService.SearchVersions(searchText);
 
-        [Fact]
-        public void Patch_WhenPatchExistsInVersion_SetsProperty()
-        {
-            var softwareInfo = new SoftwareInfo
-            {
-                Name = "Test Software",
-                Version = "1.2.3"
-            };
-
-            softwareInfo.Patch.Should().Be(3);
-        }
-
-        [Fact]
-        public void Patch_WhenPatchDoesNotExistInVersion_SetsPropertyToNull()
-        {
-            var softwareInfo = new SoftwareInfo
-            {
-                Name = "Test Software",
-                Version = "1.2"
-            };
-
-            softwareInfo.Patch.Should().BeNull();
+            result.Should().NotBeEmpty()
+                .And.HaveCount(2);
+            result.Should().Contain(s => s.Name == "Visual Studio" && s.Version == "2017.0.1");
+            result.Should().Contain(s => s.Name == "Visual Studio" && s.Version == "2019.1");
         }
     }
 }
